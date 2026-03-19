@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Η ΡΟΖ ΤΑΙΝΙΑ ΜΑΣ | Κινηματογραφική Εμπειρία</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400&family=Unbounded:wght@700;900&family=Rubik+Bubbles&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="cinematic_scrolly_style.css">
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+</head>
+<body>
+
+<!-- ── HERO ENTRANCE ──────────────────────────────────────── -->
+<section id="hero-entrance">
+    <header id="main-header">
+        <div class="header-container">
+            <div class="logo">PINK SUGAR</div>
+            <nav class="nav">
+                <a href="#">EXPERIENCE</a>
+                <a href="#">COLLECTION</a>
+                <button class="nav-btn">CONVERT</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero-content">
+        <h1 class="hero-title">
+            ΔΕΙΤΕ ΤΗ<br>
+            <span class="pink">ΡΟΖ ΤΑΙΝΙΑ ΜΑΣ</span>
+            <span class="hero-creator">CREATED BY PETMEZAS</span>
+        </h1>
+        <div class="scroll-down">
+            <span>SCROLL TO START</span>
+            <div class="mouse"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ── SCROLL HINT ─────────────────────────────────────────── -->
+<div id="hint"><span>scroll</span><div class="arr"></div></div>
+
+<!-- ══ CANVAS SECTION ════════════════════════════════════════ -->
+<section id="canvas-section">
+  <div id="sticky">
+    <canvas id="frame-canvas"></canvas>
+    
+    <div id="bg-word"><span id="bgw">PINK SUGAR</span></div>
+
+    <div id="bubbles">
+      <div class="bub r"  id="bub1">ΣΥΝΕΧΙΣΕ...</div>
+      <div class="bub l"  id="bub2">PINK<br>SUGAR</div>
+      <div class="bub r"  id="bub3">ΠΑΙΖΕΙ<br>ΠΑΓΚΟΣΜΙΩΣ.</div>
+      <div class="bub c2" id="bub4">Petmzs</div>
+    </div>
+
+    <!-- Photo from previous design -->
+    <div id="photo-overlay">
+        <img src="gkomena.png" alt="Art">
+    </div>
+
+    <div id="captions">
+      <div class="cap tl" id="cap1"><span class="cap-tag">I</span><h3>ΑΠΟ ΕΔΩ<br>Η ΡΟΖ ΤΑΙΝΙΑ ΜΑΣ</h3></div>
+      <div class="cap tr" id="cap4"><span class="cap-tag">IV</span><h3>Τέλος<br>ή Αρχή;</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FINAL SECTION ═════════════════════════════════════════ -->
+<section id="final">
+  <p class="f-eyebrow">Η ώρα της αλήθειας</p>
+  <h2 class="f-question">
+    ΘΕΣ ΝΑ ΔΕΙΣ<br>
+    <span class="pink">ΤΗΝ ΠΡΑΓΜΑΤΙΚΗ ΤΑΙΝΙΑ;</span>
+  </h2>
+  <div class="btns">
+    <button class="btn btn-y" id="yes">Ναι</button>
+    <button class="btn btn-n" id="no">Όχι</button>
+  </div>
+</section>
+
+<!-- ══ ANTIGRAVITY OVERLAY ════════════════════════════════════ -->
+<div id="antigravity-overlay">
+  <canvas id="ag-canvas"></canvas>
+  <div id="ag-title">
+    <h2>good boy</h2>
+    <p>everything floats now</p>
+  </div>
+</div>
+<button id="ag-close">✕ &nbsp;close</button>
+
+<!-- ══ PUNCHLINE ══════════════════════════════════════════════ -->
+<div id="punchline">
+  <p class="punch">α ρε<br>ανώμαλε</p>
+  <span class="punch-sub">click to close</span>
+</div>
+
+<!-- ══ ΌΧΙ SCREEN ════════════════════════════════════════════ -->
+<div id="noscreen">
+  <p class="no-t">Σοφή<br>Επιλογή.</p>
+  <span class="no-s">scroll back up ↑</span>
+</div>
+
+<script src="cinematic_scrolly_script.js"></script>
+</body>
+</html>

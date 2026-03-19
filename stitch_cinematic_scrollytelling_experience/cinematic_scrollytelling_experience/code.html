@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MONOLITH | EXPERIENCE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;900&amp;family=Manrope:wght@300;500;700&amp;family=Space+Grotesk:wght@300;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed": "#1c1b1b",
+              "background": "#131313",
+              "on-error-container": "#ffdad6",
+              "tertiary-fixed": "#5e5e5e",
+              "tertiary": "#e2e2e2",
+              "on-secondary": "#1c1b1b",
+              "inverse-on-surface": "#303030",
+              "surface-container-lowest": "#0e0e0e",
+              "secondary-fixed-dim": "#adabaa",
+              "surface-container-low": "#1b1b1b",
+              "on-primary-fixed-variant": "#e2e2e2",
+              "outline-variant": "#474747",
+              "on-primary-container": "#000000",
+              "surface-bright": "#393939",
+              "surface-tint": "#c6c6c7",
+              "on-tertiary-fixed": "#ffffff",
+              "surface-dim": "#131313",
+              "on-background": "#e2e2e2",
+              "on-primary-fixed": "#ffffff",
+              "primary-fixed-dim": "#454747",
+              "primary-fixed": "#5d5f5f",
+              "on-error": "#690005",
+              "secondary-fixed": "#c8c6c5",
+              "surface": "#131313",
+              "inverse-primary": "#5d5f5f",
+              "surface-container-highest": "#353535",
+              "on-tertiary-container": "#000000",
+              "outline": "#919191",
+              "tertiary-fixed-dim": "#474747",
+              "on-tertiary-fixed-variant": "#e2e2e2",
+              "primary-container": "#d4d4d4",
+              "surface-container": "#1f1f1f",
+              "on-secondary-container": "#e5e2e1",
+              "primary": "#ffffff",
+              "error-container": "#93000a",
+              "surface-container-high": "#2a2a2a",
+              "on-surface": "#e2e2e2",
+              "on-tertiary": "#1b1b1b",
+              "on-secondary-fixed-variant": "#3c3b3b",
+              "on-primary": "#1a1c1c",
+              "tertiary-container": "#919191",
+              "secondary": "#c8c6c5",
+              "on-surface-variant": "#c6c6c6",
+              "inverse-surface": "#e2e2e2",
+              "error": "#ffb4ab"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>body {
+    background-color: #131313;
+    color: #e2e2e2;
+    overflow-x: hidden;
+    scroll-behavior: smooth
+    }
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none
+    }
+.scrolly-section {
+    position: relative;
+    z-index: 10;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none
+    }
+.content-layer {
+    pointer-events: auto
+    }
+.glass-effect {
+    background: rgba(42, 42, 42, 0.6);
+    backdrop-filter: blur(20px)
+    }
+::-webkit-scrollbar {
+    width: 4px
+    }
+::-webkit-scrollbar-track {
+    background: #0e0e0e
+    }
+::-webkit-scrollbar-thumb {
+    background: #353535
+    }
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    opacity: 0.03;
+    pointer-events: none;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuA7_Uv35gy1ubCx_LtuqSfGBW9pjZmNX9yEjZh7EcYRku-6wmjE4NI6XlhodM8hLKsZrEJzBFdfGWp62ahdAqIX9DLX4wNy2nYXxu4dSoFWQQZjQY5ndxfnbmEstn0C_SRpFecM0OBQLQ55HoUk9wYl1vgO8U7hI5CfB-2lZIUAEekCaPh36l2CiJaelj943rvODxPnR4Qh7MUoo1sADGPqGFr1fjgSFq18LyDvOgpoqUmmxGlXUVxIeMTCRz0-a4YGO9UZNcdGNrM)
+    }</style>
+</head>
+<body class="font-body selection:bg-primary selection:text-on-primary">
+<div class="noise-overlay"></div>
+<!-- Navigation -->
+<nav class="fixed top-0 w-full flex justify-between items-center px-12 py-8 w-full z-50 bg-transparent backdrop-blur-md">
+<div class="text-2xl font-black tracking-[0.2em] text-white font-headline">MONOLITH</div>
+<div class="hidden md:flex items-center gap-12 font-headline tracking-tighter font-bold uppercase text-[13px]">
+<a class="text-white border-b border-white pb-1" href="#">Experience</a>
+<a class="text-gray-500 hover:text-white transition-colors duration-300" href="#">Archive</a>
+<a class="text-gray-500 hover:text-white transition-colors duration-300" href="#">Manifesto</a>
+</div>
+<button class="bg-primary text-on-primary px-8 py-2 font-headline font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-95">
+            Connect
+        </button>
+</nav>
+<!-- Canvas Frame Background -->
+<div class="canvas-container">
+<div class="w-full h-full bg-surface-container-lowest flex items-center justify-center relative overflow-hidden">
+<!-- Simulated Video/Frame Content -->
+<div class="absolute inset-0 opacity-40 mix-blend-screen bg-gradient-to-b from-transparent via-surface-container-low to-background"></div>
+<img class="w-full h-full object-cover scale-110 blur-sm" data-alt="Cinematic atmospheric abstract dark landscape frame" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkAK4KzbdBHLLJtkm_MwyJYgPYiriYrAcdjSHCvRv77TBCrZtJKKJFjLC9p3uB2XWwgf7JFn84L9dFnMll7I1PRPl6Lkgkd6HfMWDd4zN6NfyGqWBOs6SXqIYqxF0NFYf7o5iTxx0uiYSSUcaTkH1QLecMokMGXL-PSKUsYP51hGXwlgLbEFpLoHKfvbSxynPjwcU_gdhYOVOXGi7FPGoaJr1GnYaL8hHf-0sJ__bHZqjWxCXRqKGlI9evBXUsg_CN3v-C59lmz2k"/>
+</div>
+</div>
+<!-- Scrollytelling Progress Pulse -->
+<div class="fixed right-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-4 z-50">
+<div class="w-[1px] h-32 bg-surface-container-highest relative">
+<div class="absolute top-0 left-0 w-full h-1/3 bg-primary shadow-[0_0_15px_rgba(255,255,255,0.5)]"></div>
+</div>
+<span class="font-label text-[10px] tracking-[0.3em] uppercase rotate-90 origin-left translate-x-1 mt-12 text-on-surface-variant">Sequence_01</span>
+</div>
+<main id="scrolly-container">
+<!-- Hero Section -->
+<section class="scrolly-section">
+<div class="content-layer text-center max-w-4xl px-6">
+<span class="font-label text-xs tracking-[0.5em] uppercase text-on-surface-variant mb-6 block">The Beginning</span>
+<h1 class="font-headline text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none text-white">
+                    sunexise...
+                </h1>
+<div class="mt-8 flex justify-center items-center gap-4">
+<div class="h-[1px] w-12 bg-outline-variant"></div>
+<p class="font-label text-xs uppercase tracking-widest text-secondary">Initiating Sequence</p>
+<div class="h-[1px] w-12 bg-outline-variant"></div>
+</div>
+</div>
+</section>
+<!-- Narrative Section 02 -->
+<section class="scrolly-section">
+<div class="content-layer grid grid-cols-12 w-full max-w-7xl px-12">
+<div class="col-span-12 md:col-start-7 md:col-span-6 text-right">
+<h2 class="font-headline text-5xl md:text-7xl font-bold uppercase tracking-tighter text-white mb-6">
+                        Lost in the <br/><span class="text-outline">Void</span>
+</h2>
+<p class="font-body text-lg text-on-surface-variant max-w-md ml-auto leading-relaxed">
+                        Where light ceases to exist, the story begins. A cinematic exploration of architectural silence and digital decay.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Narrative Section 03 -->
+<section class="scrolly-section">
+<div class="content-layer grid grid-cols-12 w-full max-w-7xl px-12">
+<div class="col-span-12 md:col-span-5 text-left">
+<span class="font-label text-[10px] tracking-widest uppercase text-primary mb-4 block">03 / Analysis</span>
+<h2 class="font-headline text-5xl md:text-7xl font-bold uppercase tracking-tighter text-white mb-8">
+                        Technical <br/>Prowess.
+                    </h2>
+<div class="space-y-4">
+<div class="flex items-center gap-4 group">
+<span class="font-label text-xs text-outline-variant group-hover:text-primary transition-colors">01</span>
+<div class="h-[1px] flex-grow bg-outline-variant/30"></div>
+<span class="font-label text-xs uppercase tracking-tighter">Frame Interpolation</span>
+</div>
+<div class="flex items-center gap-4 group">
+<span class="font-label text-xs text-outline-variant group-hover:text-primary transition-colors">02</span>
+<div class="h-[1px] flex-grow bg-outline-variant/30"></div>
+<span class="font-label text-xs uppercase tracking-tighter">Luminance Mapping</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final Interaction Section -->
+<section class="scrolly-section h-screen bg-surface-container-lowest/80 backdrop-blur-xl transition-all duration-1000" id="final-choice">
+<div class="content-layer text-center max-w-2xl px-6 relative z-10" id="choice-container">
+<h3 class="font-headline text-4xl md:text-5xl font-bold uppercase tracking-tighter text-white mb-12">
+                    Thes akoma na deis thn tainia?
+                </h3>
+<div class="flex flex-col md:flex-row items-center justify-center gap-6">
+<button class="w-full md:w-48 py-5 bg-white text-black font-headline font-black uppercase tracking-widest text-sm hover:scale-105 transition-transform duration-300 shadow-[0_20px_40px_-10px_rgba(255,255,255,0.2)]" id="nai-btn" onclick="triggerNai()">
+                        Nai
+                    </button>
+<button class="w-full md:w-48 py-5 border border-outline-variant text-white font-headline font-black uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-all duration-300">
+                        Oxi
+                    </button>
+</div>
+</div>
+<!-- Hidden Final Result -->
+<div class="hidden fixed inset-0 z-[100] bg-background flex items-center justify-center overflow-hidden" id="result-layer">
+<h2 class="font-headline text-[15vw] font-black uppercase tracking-tighter leading-none text-white whitespace-nowrap opacity-0 scale-90 transition-all duration-700 ease-out" id="result-text">
+                    a re anwmale
+                </h2>
+<!-- Abstract floating decorative elements for the result screen -->
+<div class="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-[120px]"></div>
+</div>
+</section>
+</main>
+<footer class="relative z-50 bg-[#0E0E0E] flex flex-col md:flex-row justify-between items-center px-12 py-12 max-w-full bg-gradient-to-t from-[#131313] to-transparent">
+<div class="text-white opacity-50 font-label text-[10px] tracking-widest uppercase mb-4 md:mb-0">
+            © 2024 CINEMATIC MONOLITH. ALL RIGHTS RESERVED.
+        </div>
+<div class="flex gap-8 font-label text-[10px] tracking-widest uppercase">
+<a class="text-gray-600 hover:text-white transition-colors" href="#">Privacy</a>
+<a class="text-gray-600 hover:text-white transition-colors" href="#">Terms</a>
+</div>
+</footer>
+<script>
+        function triggerNai() {
+            const container = document.getElementById('scrolly-container');
+            const resultLayer = document.getElementById('result-layer');
+            const resultText = document.getElementById('result-text');
+            const choiceContainer = document.getElementById('choice-container');
+            
+            // Hide everything else
+            document.querySelector('nav').style.opacity = '0';
+            document.querySelector('.canvas-container').style.opacity = '0';
+            document.querySelector('.canvas-container').style.transition = 'opacity 1s ease';
+            document.querySelector('nav').style.transition = 'opacity 1s ease';
+            
+            choiceContainer.classList.add('opacity-0', 'scale-95', 'transition-all', 'duration-500');
+            
+            setTimeout(() => {
+                resultLayer.classList.remove('hidden');
+                resultLayer.classList.add('flex');
+                
+                // Slight delay for animation timing
+                setTimeout(() => {
+                    resultText.classList.remove('opacity-0', 'scale-90');
+                    resultText.classList.add('opacity-100', 'scale-100');
+                }, 100);
+            }, 500);
+        }
+
+        // Interaction for UX - Scroll hint removal
+        window.addEventListener('scroll', () => {
+            const progress = document.querySelector('.scrolly-section');
+            if (window.scrollY > 100) {
+                // Logic for scrollytelling frame interpolation would go here
+                // As per user instructions: Use placeholders and handle scrollytelling logic in comments/structure
+                /* 
+                   GSAP FRAME ANIMATION LOGIC:
+                   const canvas = document.querySelector("#scrollytelling-canvas");
+                   const context = canvas.getContext("2d");
+                   const frameCount = 150;
+                   const currentFrame = index => (
+                     `path/to/frames/sequence_${index.toString().padStart(4, '0')}.jpg`
+                   );
+                   
+                   gsap.to(airpods, {
+                     frame: frameCount - 1,
+                     snap: "frame",
+                     scrollTrigger: {
+                       scrub: 0.5
+                     },
+                     onUpdate: render // drawImage on canvas
+                   });
+                */
+            }
+        });
+    </script>
+</body></html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SUGAR RIOT - PINK SUGAR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,900;1,900&amp;family=Space+Grotesk:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-dim": "#222222",
+              "secondary-fixed": "#333333",
+              "primary": "#FF00FF",
+              "primary-fixed-dim": "#FF66FF",
+              "on-tertiary-fixed-variant": "#a1a1a1",
+              "on-tertiary-container": "#e0e0e0",
+              "surface-container-high": "#1a1a1a",
+              "surface-container-lowest": "#000000",
+              "error": "#ff3366",
+              "on-tertiary-fixed": "#ffffff",
+              "on-primary-container": "#ffffff",
+              "surface-variant": "#121212",
+              "on-surface": "#ffffff",
+              "on-tertiary": "#000000",
+              "primary-fixed": "#FF00FF",
+              "tertiary": "#ffffff",
+              "surface-container-low": "#0a0a0a",
+              "on-secondary-container": "#ffffff",
+              "background": "#000000",
+              "on-background": "#ffffff",
+              "primary-dim": "#CC00CC",
+              "inverse-surface": "#ffffff",
+              "on-secondary": "#000000",
+              "on-error-container": "#ffffff",
+              "surface-bright": "#1a1a1a",
+              "error-container": "#440011",
+              "tertiary-container": "#222222",
+              "error-dim": "#cc0033",
+              "secondary": "#ffffff",
+              "on-secondary-fixed-variant": "#cccccc",
+              "tertiary-fixed": "#ffffff",
+              "surface-tint": "#FF00FF",
+              "tertiary-fixed-dim": "#dddddd",
+              "on-primary-fixed-variant": "#ffffff",
+              "secondary-fixed-dim": "#bbbbbb",
+              "on-secondary-fixed": "#ffffff",
+              "outline": "#444444",
+              "on-primary-fixed": "#000000",
+              "secondary-container": "#333333",
+              "surface-dim": "#050505",
+              "inverse-primary": "#000000",
+              "outline-variant": "#222222",
+              "on-error": "#000000",
+              "secondary-dim": "#dddddd",
+              "surface-container-highest": "#252525",
+              "surface": "#000000",
+              "on-surface-variant": "#a1a1a1",
+              "inverse-on-surface": "#000000",
+              "primary-container": "#FF00FF",
+              "surface-container": "#111111",
+              "on-primary": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Epilogue"],
+              "body": ["Space Grotesk"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Smooth Scrolling Canvas Effect */
+        .scrolly-canvas {
+            perspective: 1000px;
+        }
+        
+        /* Glossy Bubble Typography Effect with Neon Glow */
+        .bubble-text {
+            background: linear-gradient(180deg, #FF00FF 0%, #FF66FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(255, 0, 255, 0.6));
+        }
+
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.8), 0 0 20px rgba(255, 0, 255, 0.4);
+        }
+
+        .glass-panel {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 255, 0.3);
+        }
+
+        /* Hide scrollbar for clean UI */
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-6 h-16">
+<div class="flex items-center gap-2 hover:scale-105 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-primary neon-glow">blur_on</span>
+<h1 class="font-['Epilogue'] tracking-tighter uppercase font-black text-2xl text-primary italic neon-glow">SUGAR RIOT</h1>
+</div>
+<div class="hover:scale-105 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-primary neon-glow">shopping_bag</span>
+</div>
+</header>
+<!-- Scrollytelling Canvas -->
+<main class="relative w-full overflow-x-hidden bg-black">
+<!-- Hero Section -->
+<section class="min-h-screen flex flex-col items-center justify-center px-6 pt-16 relative sticky top-0 bg-black">
+<div class="absolute inset-0 z-0 opacity-40 pointer-events-none overflow-hidden">
+<div class="absolute top-1/4 -right-20 w-80 h-80 bg-primary rounded-full blur-[140px]"></div>
+<div class="absolute bottom-1/4 -left-20 w-80 h-80 bg-primary-dim rounded-full blur-[140px]"></div>
+</div>
+<div class="z-10 flex flex-col items-center text-center">
+<span class="bg-primary text-white text-[10px] px-4 py-1 rounded-full font-bold tracking-[0.3em] uppercase mb-8 shadow-[0_0_15px_rgba(255,0,255,0.5)]">LAB_RELEASE_06</span>
+<h2 class="font-headline text-6xl md:text-8xl font-black italic leading-[0.85] tracking-tighter text-white uppercase mb-4 scale-x-110">
+                PINK<br/><span class="text-primary neon-glow">SUGAR</span>
+</h2>
+<p class="font-label text-xs tracking-widest uppercase font-bold mt-4 max-w-[280px] text-on-surface-variant">
+                Hyper-Synthetic Bubbles for the Urban Void
+            </p>
+<div class="mt-12 flex flex-col gap-3">
+<div class="h-12 w-[1px] bg-primary mx-auto opacity-70 shadow-[0_0_8px_rgba(255,0,255,0.8)]"></div>
+<span class="text-[10px] tracking-widest font-black uppercase rotate-90 py-4 text-primary neon-glow">SCROLL</span>
+</div>
+</div>
+</section>
+<!-- Scrolly Text Section 1 -->
+<section class="min-h-screen flex flex-col justify-center px-6 bg-surface-container-low relative">
+<div class="max-w-md mx-auto space-y-24">
+<div class="relative group">
+<div class="absolute -top-12 -left-4 font-label text-[10px] text-primary font-bold tracking-widest opacity-80 neon-glow">01 // SEQUENCE</div>
+<h3 class="font-headline text-[12vw] leading-none font-black italic bubble-text transition-all duration-700">
+                    SUNEXISE...
+                </h3>
+<p class="font-body text-sm mt-6 text-on-surface-variant leading-relaxed max-w-[80%] border-l-2 border-primary pl-4 italic">
+                    The ritual of sugar begins. A digital coating of your deepest desires, crystallizing in real-time.
+                </p>
+</div>
+<!-- Abstract Visual Asset -->
+<div class="relative h-64 w-full rounded-xl overflow-hidden shadow-[0_0_60px_rgba(255,0,255,0.25)] bg-surface-container-high border border-white/5">
+<img alt="Abstract glossy neon pink fluid" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBD8Qah8Ze-doylh2fL-OwlyAvubcnONYkrRwUUjcwSezZ9YVUi_003GGM0DyJS7PTwifiYdooS5dfbVFbXOQBiheYkpIwSggyPDyuVrbVx_uy_GVMLTlf-2HNCeJq4FXS4wVCjkl-01nYHipAtapMeztJG8VwuyxSMvTZHMizOoBWj0omK4Zgg_w1KJP2iMQsAC8gFD7EZC3ArXk7_Q7jkMpAGk5r5cYznwuXpD91-1-F0jZKfYyQx7dN0ztvDsHwEqQF366tdBEU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+<div class="absolute bottom-4 left-4 flex gap-2">
+<span class="bg-primary text-white text-[8px] px-2 py-0.5 rounded font-black tracking-tighter uppercase shadow-[0_0_10px_rgba(255,0,255,0.5)]">HIGH_GLOSS</span>
+<span class="bg-white text-black text-[8px] px-2 py-0.5 rounded font-black tracking-tighter uppercase">V.06</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Scrolly Text Section 2 -->
+<section class="min-h-screen flex flex-col justify-center px-6 bg-surface-container-high relative">
+<div class="max-w-md mx-auto space-y-24">
+<div class="text-right flex flex-col items-end">
+<div class="font-label text-[10px] text-primary font-bold tracking-widest opacity-80 mb-4 neon-glow">02 // TRANSMISSION</div>
+<h3 class="font-headline text-[10vw] leading-tight font-black uppercase text-white tracking-tighter">
+                    SWEETEN<br/><span class="text-primary neon-glow">THE VOID</span>
+</h3>
+<div class="w-12 h-1 bg-primary mt-6 mb-4 shadow-[0_0_10px_rgba(255,0,255,0.8)]"></div>
+<p class="font-body text-sm text-on-surface-variant leading-relaxed text-right max-w-[85%]">
+                    Resistance is pink. In a world of cold metal, we choose the saccharine riot. A aesthetic defiance against the monochrome.
+                </p>
+</div>
+<!-- Stamp Component -->
+<div class="flex justify-center">
+<div class="w-32 h-32 rounded-full bg-primary flex items-center justify-center text-center p-4 rotate-12 shadow-[0_0_40px_rgba(255,0,255,0.6)] hover:rotate-0 transition-all cursor-crosshair">
+<span class="font-headline text-white text-xs font-black uppercase tracking-tight">STREETWEAR LAB APPROVED</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Final Decision Section -->
+<section class="min-h-screen flex flex-col items-center justify-center px-8 bg-black relative overflow-hidden">
+<div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_rgba(255,0,255,0.2),_transparent_70%)]"></div>
+<div class="z-10 text-center space-y-12 w-full">
+<div class="space-y-4">
+<h4 class="font-label text-[10px] text-white font-black tracking-[0.4em] uppercase opacity-60">FINAL GATEWAY</h4>
+<h3 class="font-headline text-4xl font-black leading-tight uppercase tracking-tighter italic text-primary neon-glow">
+                    THES AKOMA NA DEIS THN TAINIA?
+                </h3>
+</div>
+<div class="flex flex-col gap-4 w-full max-w-[280px] mx-auto">
+<!-- NAI Button -->
+<button class="group relative bg-primary text-white h-16 rounded-full flex items-center justify-center font-headline text-xl font-black italic tracking-tighter transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,0,255,0.5)] overflow-hidden">
+<span class="z-10">NAI</span>
+<div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+<!-- OXI Button -->
+<button class="bg-surface-container-highest text-white h-16 rounded-full flex items-center justify-center font-headline text-xl font-black italic tracking-tighter transition-all hover:scale-105 active:scale-95 shadow-lg border border-white/10">
+                    OXI
+                </button>
+</div>
+<!-- Punchline Placeholder -->
+<div class="pt-8 opacity-0 hover:opacity-100 transition-opacity duration-500">
+<p class="font-headline text-xs text-primary font-black uppercase italic tracking-widest neon-glow">
+                    a re anwmale
+                </p>
+</div>
+</div>
+<!-- Bento Metadata Grid -->
+<div class="mt-20 grid grid-cols-2 gap-2 w-full max-w-[320px] relative z-10">
+<div class="bg-surface-container-low p-4 rounded-xl border border-primary/20">
+<span class="font-label text-[8px] uppercase font-bold text-primary block mb-1 neon-glow">FPS</span>
+<span class="font-body text-xs font-black text-white">60.00</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl border border-primary/20">
+<span class="font-label text-[8px] uppercase font-bold text-primary block mb-1 neon-glow">LATENCY</span>
+<span class="font-body text-xs font-black text-white">2.4MS</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-black flex flex-col items-center gap-4 py-12 px-8 w-full border-t border-white/10 mt-auto">
+<div class="flex gap-6 mb-4">
+<a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest font-bold text-zinc-500 hover:text-primary hover:neon-glow transition-all" href="#">Privacy</a>
+<a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest font-bold text-zinc-500 hover:text-primary hover:neon-glow transition-all" href="#">Archive</a>
+<a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest font-bold text-zinc-500 hover:text-primary hover:neon-glow transition-all" href="#">Terms</a>
+</div>
+<div class="w-full flex flex-col items-center gap-4 pt-8">
+<div class="flex gap-4">
+<span class="w-8 h-[1px] bg-primary opacity-50 shadow-[0_0_5px_rgba(255,0,255,0.8)]"></span>
+<span class="w-2 h-[1px] bg-primary opacity-50 shadow-[0_0_5px_rgba(255,0,255,0.8)]"></span>
+<span class="w-16 h-[1px] bg-primary opacity-50 shadow-[0_0_5px_rgba(255,0,255,0.8)]"></span>
+</div>
+<p class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest font-bold text-primary neon-glow">©2024 SUGAR RIOT LABS</p>
+</div>
+</footer>
+</body></html>

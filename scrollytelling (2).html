@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scrollytelling</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --pink:  #f050b8;
+      --pink2: #ff90d8;
+      --pink3: #a80062;
+      --dim:   rgba(255,255,255,.28);
+      --FD:    'Bebas Neue', sans-serif;
+      --FB:    'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:auto; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--FB);
+      overflow-x: hidden;
+    }
+
+    /* grain */
+    body::after {
+      content:''; position:fixed; inset:0;
+      pointer-events:none; z-index:9998; opacity:.05;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:180px;
+    }
+
+    /* ══ CANVAS SECTION ═══════════════════════════════════════ */
+    #canvas-section { position:relative; height:600vh; }
+
+    #sticky {
+      position:sticky; top:0;
+      width:100%; height:100vh; overflow:hidden;
+    }
+
+    canvas#frame-canvas {
+      position:absolute; inset:0; width:100%; height:100%;
+    }
+
+    /* ── Background watermark word ── */
+    #bg-word {
+      position:absolute; inset:0; z-index:1;
+      pointer-events:none; overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+    }
+    #bgw {
+      font-family: var(--FD);
+      font-size:clamp(12rem, 26vw, 32rem);
+      line-height:1; color:var(--white); opacity:.06;
+      white-space:nowrap; will-change:transform; letter-spacing:-.02em;
+    }
+
+    /* ── Bubble words ── */
+    #bubbles { position:absolute; inset:0; z-index:3; pointer-events:none; }
+
+    .bub {
+      position:absolute;
+      font-family:var(--FD);
+      font-size:clamp(5rem,13vw,16rem);
+      line-height:.95; letter-spacing:-.01em; text-transform:uppercase;
+      background:linear-gradient(155deg,#ffd6f0 0%,#f87fd4 20%,#f050b8 45%,#c0006c 75%,#7a003e 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      filter:
+        drop-shadow(0 4px  0   #c0006c)
+        drop-shadow(0 9px  0   #7a003e)
+        drop-shadow(0 18px 16px rgba(50,0,30,.5))
+        drop-shadow(0 28px 28px rgba(50,0,30,.25));
+      opacity:0; will-change:opacity,transform;
+    }
+    .bub.c  { top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+    .bub.l  { top:48%; left:4%; }
+    .bub.r  { top:46%; right:4%; text-align:right; }
+    .bub.c2 { top:52%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+
+    /* ── Captions ── */
+    #captions { position:absolute; inset:0; z-index:5; pointer-events:none; }
+    .cap { position:absolute; opacity:0; will-change:opacity,transform; }
+    .cap.tl { top:8%;    left:5%; }
+    .cap.br { bottom:8%; right:5%; text-align:right; }
+    .cap.bl { bottom:9%; left:5%; }
+    .cap.tr { top:8%;    right:5%; text-align:right; }
+
+    .cap-tag {
+      display:inline-block; font-family:var(--FD);
+      font-size:clamp(.52rem,.85vw,.7rem); letter-spacing:.25em; text-transform:uppercase;
+      border:1px solid rgba(255,255,255,.3); border-radius:999px;
+      padding:.18em .9em; margin-bottom:.5em; color:var(--dim);
+    }
+    .cap h3 {
+      font-family:var(--FD); font-size:clamp(1.4rem,2.6vw,2.5rem);
+      line-height:1; letter-spacing:.03em; text-transform:uppercase; color:var(--white);
+    }
+
+    /* ── Scroll hint ── */
+    #hint {
+      position:fixed; bottom:2rem; left:50%; transform:translateX(-50%);
+      z-index:200; display:flex; flex-direction:column; align-items:center; gap:.3rem;
+      transition:opacity .4s;
+    }
+    #hint.gone { opacity:0; pointer-events:none; }
+    #hint span { font-size:.55rem; letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.3); }
+    .arr {
+      width:14px; height:14px;
+      border-right:1px solid rgba(255,255,255,.35); border-bottom:1px solid rgba(255,255,255,.35);
+      transform:rotate(45deg); animation:ab 1.5s ease-in-out infinite;
+    }
+    @keyframes ab {
+      0%,100% { transform:rotate(45deg) translateY(0);  opacity:.35; }
+      50%      { transform:rotate(45deg) translateY(5px);opacity:.9; }
+    }
+
+    /* ══ FINAL SECTION ════════════════════════════════════════ */
+    #final {
+      min-height:100vh; background:var(--black);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:0; padding:5rem 2rem 6rem; position:relative;
+      border-top:1px solid rgba(255,255,255,.1); overflow:hidden;
+    }
+    #final::before {
+      content:''; position:absolute;
+      width:600px; height:600px;
+      background:radial-gradient(circle,rgba(240,80,184,.18) 0%,transparent 70%);
+      top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none;
+    }
+    .f-eyebrow {
+      font-family:var(--FD); font-size:clamp(.55rem,.85vw,.7rem);
+      letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.3);
+      margin-bottom:1rem; opacity:0; transform:translateY(12px);
+    }
+    .f-question {
+      font-family:var(--FD); font-size:clamp(3rem,7.5vw,9rem);
+      line-height:.9; letter-spacing:.01em; text-transform:uppercase;
+      text-align:center; color:var(--white); max-width:880px;
+      opacity:0; transform:translateY(30px);
+    }
+    .f-question .pink {
+      background:linear-gradient(155deg,#ffd6f0 0%,#f87fd4 20%,#f050b8 45%,#c0006c 75%,#7a003e 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .btns {
+      display:flex; gap:.85rem; margin-top:3rem;
+      opacity:0; transform:translateY(20px);
+    }
+    .btn {
+      font-family:var(--FD); font-size:clamp(1.2rem,2.2vw,1.8rem);
+      letter-spacing:.12em; text-transform:uppercase;
+      padding:.5em 2.4em .4em; border-radius:999px; cursor:pointer;
+      transition:transform .3s cubic-bezier(.22,1,.36,1), background .2s, color .2s, box-shadow .3s;
+    }
+    .btn-y { background:var(--pink); color:var(--white); border:2px solid var(--pink); }
+    .btn-y:hover {
+      background:var(--pink2); border-color:var(--pink2);
+      transform:rotate(-2deg) scale(1.07); box-shadow:0 10px 40px rgba(240,80,184,.45);
+    }
+    .btn-n { background:transparent; color:var(--white); border:2px solid rgba(255,255,255,.25); }
+    .btn-n:hover { border-color:var(--white); transform:rotate(2deg) scale(1.07); }
+
+    /* ══ ANTIGRAVITY OVERLAY ══════════════════════════════════ */
+    #antigravity-overlay {
+      display:none; position:fixed; inset:0; z-index:5000;
+      background:var(--black); overflow:hidden;
+    }
+    #antigravity-overlay.on { display:block; }
+
+    /* Physics canvas sits behind the DOM particles */
+    #ag-canvas { position:absolute; inset:0; width:100%; height:100%; }
+
+    /* Floating word particles */
+    .ag-particle {
+      position:absolute;
+      font-family:var(--FD);
+      font-size:clamp(1.5rem, 4vw, 5rem);
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      pointer-events:none;
+      will-change:transform;
+      user-select:none;
+      line-height:1;
+      transform-origin:center center;
+    }
+
+    /* Pink glow particles */
+    .ag-dot {
+      position:absolute;
+      border-radius:50%;
+      pointer-events:none;
+      will-change:transform;
+    }
+
+    /* Close button */
+    #ag-close {
+      position:fixed; top:2rem; right:2rem; z-index:6000;
+      font-family:var(--FD); font-size:1rem; letter-spacing:.2em;
+      text-transform:uppercase; color:rgba(255,255,255,.4);
+      background:none; border:1px solid rgba(255,255,255,.15);
+      border-radius:999px; padding:.4em 1.2em; cursor:pointer;
+      transition:color .2s, border-color .2s;
+      display:none;
+    }
+    #ag-close:hover { color:var(--white); border-color:var(--white); }
+    #ag-close.on { display:block; }
+
+    /* Center text shown at start of antigravity */
+    #ag-title {
+      position:absolute; top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      text-align:center; pointer-events:none;
+      animation:agFadeOut 1.8s 1.2s forwards;
+      z-index:10;
+    }
+    #ag-title h2 {
+      font-family:var(--FD);
+      font-size:clamp(3rem,10vw,10rem);
+      line-height:.9; text-transform:uppercase;
+      background:linear-gradient(155deg,#ffd6f0 0%,#f87fd4 20%,#f050b8 45%,#c0006c 75%,#7a003e 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    #ag-title p {
+      margin-top:.6rem; font-size:clamp(.6rem,1vw,.8rem);
+      letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.3);
+    }
+    @keyframes agFadeOut {
+      from { opacity:1; } to { opacity:0; }
+    }
+
+    /* ══ PUNCHLINE ════════════════════════════════════════════ */
+    #punchline {
+      display:none; position:fixed; inset:0; z-index:10000;
+      background:var(--black);
+      align-items:center; justify-content:center; flex-direction:column; gap:.6rem;
+    }
+    #punchline.on { display:flex; }
+    .punch {
+      font-family:var(--FD); font-size:clamp(4rem,15vw,15rem);
+      line-height:.92; text-align:center; text-transform:uppercase;
+      letter-spacing:.02em; padding:0 1rem;
+      background:linear-gradient(155deg,#ffd6f0 0%,#f87fd4 20%,#f050b8 45%,#c0006c 75%,#7a003e 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      animation:popIn .7s cubic-bezier(.22,1,.36,1) both;
+    }
+    .punch-sub {
+      font-size:.65rem; letter-spacing:.28em; color:rgba(255,255,255,.25);
+      text-transform:uppercase; animation:popIn .7s .2s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(.78) translateY(40px); }
+      to   { opacity:1; transform:scale(1)   translateY(0); }
+    }
+
+    /* ══ ΌΧΙ SCREEN ═══════════════════════════════════════════ */
+    #noscreen {
+      display:none; position:fixed; inset:0; z-index:10000;
+      background:var(--black); border:2px solid var(--pink);
+      align-items:center; justify-content:center; flex-direction:column; gap:1rem;
+    }
+    #noscreen.on { display:flex; }
+    .no-t {
+      font-family:var(--FD); font-size:clamp(3rem,10vw,9rem);
+      text-transform:uppercase; color:var(--white); text-align:center;
+      animation:popIn .6s cubic-bezier(.22,1,.36,1) both;
+    }
+    .no-s {
+      font-size:.65rem; letter-spacing:.25em; color:rgba(255,255,255,.3);
+      text-transform:uppercase; animation:popIn .6s .15s cubic-bezier(.22,1,.36,1) both;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── SCROLL HINT ─────────────────────────────────────────── -->
+<div id="hint"><span>scroll</span><div class="arr"></div></div>
+
+<!-- ══ CANVAS SECTION ════════════════════════════════════════ -->
+<section id="canvas-section">
+  <div id="sticky">
+    <canvas id="frame-canvas"></canvas>
+    <div id="bg-word"><span id="bgw">CINEMA</span></div>
+
+    <div id="bubbles">
+      <div class="bub c"  id="bub1">SUNEXISE...</div>
+      <div class="bub l"  id="bub2">PINK<br>SUGAR</div>
+      <div class="bub r"  id="bub3">WORLD<br>TOUR.</div>
+      <div class="bub c2" id="bub4">CLASSIC.</div>
+    </div>
+
+    <div id="captions">
+      <div class="cap tl" id="cap1"><span class="cap-tag">I</span><h3>Η Αυγή<br>Ξεκινάει</h3></div>
+      <div class="cap br" id="cap2"><span class="cap-tag">II</span><h3>Ο Ήλιος<br>Ανατέλλει</h3></div>
+      <div class="cap bl" id="cap3"><span class="cap-tag">III</span><h3>Φως<br>στο Σκοτάδι</h3></div>
+      <div class="cap tr" id="cap4"><span class="cap-tag">IV</span><h3>Τέλος<br>ή Αρχή;</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FINAL SECTION ═════════════════════════════════════════ -->
+<section id="final">
+  <p class="f-eyebrow">Η ώρα της αλήθειας</p>
+  <h2 class="f-question">
+    Θες ακόμα να δεις<br>
+    <span class="pink">την ταινία;</span>
+  </h2>
+  <div class="btns">
+    <button class="btn btn-y" id="yes">Ναι</button>
+    <button class="btn btn-n" id="no">Όχι</button>
+  </div>
+</section>
+
+<!-- ══ ANTIGRAVITY OVERLAY ════════════════════════════════════ -->
+<div id="antigravity-overlay">
+  <canvas id="ag-canvas"></canvas>
+  <div id="ag-title">
+    <h2>ANTI<br>GRAVITY</h2>
+    <p>everything floats now</p>
+  </div>
+</div>
+<button id="ag-close">✕ &nbsp;close</button>
+
+<!-- ══ PUNCHLINE ══════════════════════════════════════════════ -->
+<div id="punchline">
+  <p class="punch">α ρε<br>ανώμαλε</p>
+  <span class="punch-sub">click to close</span>
+</div>
+
+<!-- ══ ΌΧΙ SCREEN ════════════════════════════════════════════ -->
+<div id="noscreen">
+  <p class="no-t">Σοφή<br>Επιλογή.</p>
+  <span class="no-s">scroll back up ↑</span>
+</div>
+
+
+<script>
+  /* ─────────────────────────────────────────────────────────────
+     SECTION 1 — YOUR FRAME IMAGES
+     ─────────────────────────────────────────────────────────────
+     OPTION A — manual:
+       const frames = ['./frames/001.jpg', ...];
+     OPTION B — auto-numbered:
+       const frames = Array.from({length:300},(_,i)=>
+         `./frames/frame_${String(i+1).padStart(4,'0')}.jpg`);
+     Leave empty → demo mode.
+  ─────────────────────────────────────────────────────────────── */
+  const frames = [
+    // ↓↓↓ INSERT YOUR FRAME PATHS HERE ↓↓↓
+  ];
+
+  /* ─────────────────────────────────────────────────────────────
+     SECTION 2 — SCROLL TIMINGS  [inStart, inEnd, outStart, outEnd]
+  ─────────────────────────────────────────────────────────────── */
+  const T = {
+    cap1:[0.04,0.12,0.22,0.30], bub1:[0.05,0.13,0.22,0.30],
+    cap2:[0.33,0.42,0.52,0.60], bub2:[0.34,0.43,0.52,0.60],
+    cap3:[0.62,0.70,0.80,0.88], bub3:[0.62,0.70,0.80,0.88],
+    cap4:[0.90,0.96,0.98,1.00], bub4:[0.90,0.96,0.98,1.00],
+  };
+
+  /* ─────────────────────────────────────────────────────────────
+     SECTION 3 — CANVAS SETUP
+  ─────────────────────────────────────────────────────────────── */
+  const fc   = document.getElementById('frame-canvas');
+  const ctx  = fc.getContext('2d');
+  const DEMO = frames.length === 0;
+  const TOTAL= DEMO ? 150 : frames.length;
+
+  function resize(){ fc.width=innerWidth; fc.height=innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+
+  /* Demo renderer — black + pink orb */
+  function drawDemo(i){
+    const t=i/(TOTAL-1), W=fc.width, H=fc.height;
+    ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,W,H);
+    const ox=W*(.1+t*.8), oy=H*(.7-Math.sin(t*Math.PI)*.38), r=W*(.12+t*.1);
+    const g=ctx.createRadialGradient(ox,oy,0,ox,oy,r*4);
+    g.addColorStop(0,'rgba(255,100,210,.95)'); g.addColorStop(.2,'rgba(240,80,184,.6)');
+    g.addColorStop(.55,'rgba(168,0,98,.18)');  g.addColorStop(1,'rgba(168,0,98,0)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(255,255,255,.03)'; ctx.lineWidth=1;
+    const s=Math.round(H/8);
+    for(let y=s;y<H;y+=s){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    for(let x=s;x<W;x+=s){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SECTION 4 — REAL FRAME LOADER
+  ─────────────────────────────────────────────────────────────── */
+  let imgs=[];
+  async function preload(){
+    if(DEMO)return;
+    return new Promise(res=>{
+      let done=0; imgs=new Array(TOTAL);
+      frames.forEach((src,i)=>{
+        const img=new Image();
+        img.onload=img.onerror=()=>{if(++done===TOTAL)res();};
+        img.src=src; imgs[i]=img;
+      });
+    });
+  }
+  function drawFrame(i){
+    const img=imgs[i]; if(!img?.complete)return;
+    const W=fc.width,H=fc.height,s=Math.max(W/img.naturalWidth,H/img.naturalHeight);
+    ctx.clearRect(0,0,W,H);
+    ctx.drawImage(img,(W-img.naturalWidth*s)/2,(H-img.naturalHeight*s)/2,img.naturalWidth*s,img.naturalHeight*s);
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SECTION 5 — GSAP SCROLL
+  ─────────────────────────────────────────────────────────────── */
+  gsap.registerPlugin(ScrollTrigger);
+  function alpha(p,[a,b,c,d]){
+    if(p<a)return 0; if(p<b)return(p-a)/(b-a);
+    if(p<c)return 1; if(p<d)return 1-(p-c)/(d-c); return 0;
+  }
+
+  function initScroll(){
+    ScrollTrigger.create({
+      trigger:'#canvas-section', start:'top top', end:'bottom bottom', scrub:.65,
+      onUpdate(self){
+        const f=Math.round(self.progress*(TOTAL-1));
+        DEMO?drawDemo(f):drawFrame(f);
+        gsap.set('#bgw',{x:self.progress*-80});
+        Object.entries(T).forEach(([id,timing])=>{
+          const el=document.getElementById(id); if(!el)return;
+          const op=alpha(self.progress,timing);
+          const isBub=id.startsWith('bub');
+          gsap.set(el, isBub
+            ?{opacity:op,scale:.88+op*.12,y:(1-op)*45}
+            :{opacity:op,y:(1-op)*16});
+        });
+      },
+    });
+
+    const hint=document.getElementById('hint');
+    ScrollTrigger.create({
+      trigger:'#canvas-section', start:'top-=4 top',
+      onEnter:()=>hint.classList.add('gone'),
+      onLeaveBack:()=>hint.classList.remove('gone'),
+    });
+
+    ScrollTrigger.create({
+      trigger:'#final', start:'top 78%', once:true,
+      onEnter(){
+        gsap.to('.f-eyebrow', {opacity:1,y:0,duration:.8,ease:'power3.out'});
+        gsap.to('.f-question',{opacity:1,y:0,duration:1, ease:'power3.out',delay:.15});
+        gsap.to('.btns',      {opacity:1,y:0,duration:.9,ease:'power3.out',delay:.35});
+      },
+    });
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SECTION 6 — ANTIGRAVITY ENGINE  (Matter.js)
+     Words and glowing dots float upward with physics.
+     Mouse/touch attracts particles toward cursor.
+  ─────────────────────────────────────────────────────────────── */
+  const AG_WORDS = [
+    'SUNEXISE','PINK','SUGAR','WORLD','TOUR','CLASSIC',
+    'CINEMA','SCROLL','TAINIA','ΑΥΓΗ','ΗΛΙΟΣ','ΦΩΣ',
+    'ΣΚΟΤΑΔΙ','ΤΕΛΟΣ','ΑΡΧΗ','GRAVITY','FLOAT','FREE',
+  ];
+
+  /* Pink shades for word colors */
+  const AG_COLORS = [
+    '#f050b8','#ff90d8','#ffffff','#ff5cc8','#ffd6f0',
+    '#c0006c','#ff80d0','#ffe0f5',
+  ];
+
+  let agRunning = false;
+  let agBodies  = [];   // { body, el }  — physics body paired with DOM element
+  let agEngine, agWorld, agRunner;
+  let mouseX = innerWidth/2, mouseY = innerHeight/2;
+  let agRaf;
+
+  function launchAntigravity(){
+    if(agRunning) return;
+    agRunning = true;
+
+    const overlay = document.getElementById('antigravity-overlay');
+    overlay.classList.add('on');
+    document.getElementById('ag-close').classList.add('on');
+    document.body.style.overflow = 'hidden';
+
+    const W = innerWidth, H = innerHeight;
+
+    /* ── Matter.js world with negative gravity (float up) ── */
+    const { Engine, World, Bodies, Body, Runner, Events } = Matter;
+
+    agEngine        = Engine.create();
+    agEngine.gravity.y = -0.08;   // gentle upward float
+    agEngine.gravity.x =  0;
+    agWorld         = agEngine.world;
+    agRunner        = Runner.create();
+    Runner.run(agRunner, agEngine);
+
+    agBodies = [];
+
+    /* Create word DOM elements + physics bodies */
+    AG_WORDS.forEach((word, idx) => {
+      const el = document.createElement('div');
+      el.className = 'ag-particle';
+      el.textContent = word;
+
+      /* Random size */
+      const size = 20 + Math.random() * 60;
+      el.style.fontSize = size + 'px';
+      el.style.color = AG_COLORS[idx % AG_COLORS.length];
+
+      /* Random start position spread across bottom 60% */
+      const x = 60 + Math.random() * (W - 120);
+      const y = H * 0.4 + Math.random() * (H * 0.55);
+
+      el.style.left = x + 'px';
+      el.style.top  = y + 'px';
+
+      /* Stagger entrance */
+      el.style.opacity = '0';
+      gsap.to(el, {opacity:1, duration:.4, delay: idx * 0.07, ease:'power2.out'});
+
+      overlay.appendChild(el);
+
+      /* Physics body (rectangle approximation) */
+      const bw = word.length * size * 0.6;
+      const bh = size * 1.1;
+      const body = Bodies.rectangle(x + bw/2, y + bh/2, bw, bh, {
+        restitution: 0.6,
+        friction:    0.01,
+        frictionAir: 0.008,
+        label:       'word',
+      });
+
+      /* Random initial velocity */
+      Body.setVelocity(body, {
+        x: (Math.random() - 0.5) * 4,
+        y: -(Math.random() * 3 + 1),
+      });
+      Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.08);
+
+      World.add(agWorld, body);
+      agBodies.push({ body, el, offX: 0, offY: 0 });
+    });
+
+    /* Pink glow dots */
+    for(let i = 0; i < 18; i++){
+      const size = 8 + Math.random() * 40;
+      const el   = document.createElement('div');
+      el.className = 'ag-dot';
+      el.style.width  = size + 'px';
+      el.style.height = size + 'px';
+
+      const pink = Math.random() > .5 ? '#f050b8' : '#ff90d8';
+      el.style.background = pink;
+      el.style.boxShadow  = `0 0 ${size*2}px ${size}px ${pink}55`;
+      el.style.opacity    = (0.3 + Math.random() * 0.5).toString();
+
+      const x = Math.random() * W;
+      const y = H * 0.3 + Math.random() * (H * 0.65);
+      el.style.left = x + 'px';
+      el.style.top  = y + 'px';
+
+      overlay.appendChild(el);
+
+      const body = Bodies.circle(x, y, size/2, {
+        restitution: 0.8, friction: 0.005, frictionAir: 0.005, label:'dot',
+      });
+      Body.setVelocity(body, {
+        x: (Math.random() - 0.5) * 6,
+        y: -(Math.random() * 4 + 2),
+      });
+      World.add(agWorld, body);
+      agBodies.push({ body, el, isDot:true });
+    }
+
+    /* Invisible floor above top (catch elements that float off top) */
+    const ceiling = Bodies.rectangle(W/2, -200, W * 2, 40, { isStatic:true, label:'ceiling' });
+    const wallL   = Bodies.rectangle(-30, H/2, 60, H*3,  { isStatic:true });
+    const wallR   = Bodies.rectangle(W+30,H/2, 60, H*3,  { isStatic:true });
+    World.add(agWorld, [ceiling, wallL, wallR]);
+
+    /* ── DOM sync loop ── */
+    function syncLoop(){
+      agBodies.forEach(({ body, el, isDot }) => {
+        const { x, y } = body.position;
+        const angle    = body.angle;
+        el.style.left      = (x - (isDot ? el.offsetWidth/2  : 0)) + 'px';
+        el.style.top       = (y - (isDot ? el.offsetHeight/2 : 0)) + 'px';
+        el.style.transform = `rotate(${angle}rad)`;
+
+        /* Wrap elements that float above ceiling back to bottom */
+        if(y < -300){
+          Body.setPosition(body, { x, y: H + 100 });
+          Body.setVelocity(body, { x: body.velocity.x, y: -(Math.random()*3+2) });
+        }
+        /* Wrap elements below floor back to top */
+        if(y > H + 300){
+          Body.setPosition(body, { x, y: -100 });
+        }
+      });
+      agRaf = requestAnimationFrame(syncLoop);
+    }
+    syncLoop();
+
+    /* ── Mouse / touch attraction ── */
+    function applyMouseForce(){
+      if(!agRunning) return;
+      agBodies.forEach(({ body }) => {
+        const dx = mouseX - body.position.x;
+        const dy = mouseY - body.position.y;
+        const dist= Math.sqrt(dx*dx + dy*dy);
+        if(dist < 280){
+          const force = 0.00012 * (1 - dist/280);
+          Body.applyForce(body, body.position, {
+            x: dx / dist * force,
+            y: dy / dist * force,
+          });
+        }
+      });
+    }
+    Events.on(agEngine, 'beforeUpdate', applyMouseForce);
+  }
+
+  /* Stop antigravity and clean up */
+  function stopAntigravity(){
+    if(!agRunning) return;
+    agRunning = false;
+    cancelAnimationFrame(agRaf);
+    Matter.Runner.stop(agRunner);
+    Matter.Engine.clear(agEngine);
+    /* Remove all DOM particles */
+    const overlay = document.getElementById('antigravity-overlay');
+    overlay.querySelectorAll('.ag-particle, .ag-dot').forEach(el => el.remove());
+    overlay.classList.remove('on');
+    document.getElementById('ag-close').classList.remove('on');
+    document.body.style.overflow = '';
+    agBodies = [];
+  }
+
+  /* Track mouse/touch position */
+  window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+  window.addEventListener('touchmove', e => {
+    mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY;
+  }, { passive:true });
+
+  /* ─────────────────────────────────────────────────────────────
+     SECTION 7 — BUTTON INTERACTIONS
+  ─────────────────────────────────────────────────────────────── */
+  /* "Ναι" → punchline */
+  document.getElementById('yes').addEventListener('click', () => {
+    document.getElementById('punchline').classList.add('on');
+    document.body.style.overflow = 'hidden';
+  });
+
+  /* "Όχι" → antigravity! */
+  document.getElementById('no').addEventListener('click', () => {
+    launchAntigravity();
+  });
+
+  /* Close antigravity */
+  document.getElementById('ag-close').addEventListener('click', stopAntigravity);
+
+  /* Punchline dismiss */
+  document.getElementById('punchline').addEventListener('click', () => {
+    document.getElementById('punchline').classList.remove('on');
+    document.body.style.overflow = '';
+  });
+
+  /* ─────────────────────────────────────────────────────────────
+     SECTION 8 — BOOT
+  ─────────────────────────────────────────────────────────────── */
+  (async () => {
+    DEMO ? drawDemo(0) : (await preload(), drawFrame(0));
+    initScroll();
+  })();
+</script>
+</body>
+</html>
