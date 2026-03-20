@@ -433,3 +433,55 @@ canvas#frame-canvas {
     0% { top: 6px; opacity: 1; }
     100% { top: 22px; opacity: 0; }
 }
+
+/* ══ MOBILE RESPONSIVENESS ══════════════════════════════════ */
+@media (max-width: 768px) {
+    #main-header {
+        padding: 1rem;
+    }
+    .header-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .logo {
+        font-size: 1.5rem;
+    }
+    .nav {
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .nav a {
+        font-size: 0.8rem;
+    }
+    .nav-btn {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.75rem;
+    }
+    .hero-title {
+        font-size: clamp(2.5rem, 11vw, 4rem);
+        letter-spacing: -1px;
+        margin-bottom: 2rem;
+        line-height: 1.1;
+    }
+    .hero-creator {
+        font-size: 0.6rem;
+        bottom: -2rem;
+        right: 50%;
+        transform: translateX(50%);
+    }
+    #photo-overlay {
+        width: 240px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+    }
+    .bub.l  { top: 48%; left: 5%; }
+    .bub.r  { top: 46%; right: 5%; }
+    #bub1 { font-size: clamp(2rem, 7vw, 4rem); right: 5% !important; }
+    #bub3 { font-size: clamp(1.8rem, 6vw, 3.5rem); }
+    .f-question { font-size: clamp(2rem, 8vw, 4rem); }
+    .btn { font-size: clamp(1rem, 4vw, 1.2rem); padding: 0.6em 1.8em; }
+    .punch { font-size: clamp(3rem, 15vw, 6rem); }
+    .no-t { font-size: clamp(2.5rem, 12vw, 5rem); }
+}
